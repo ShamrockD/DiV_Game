@@ -1,5 +1,4 @@
 using UnityEngine;
-using UnityEngine.Events;
 
 
 namespace UnviversalMechanics
@@ -10,7 +9,6 @@ namespace UnviversalMechanics
 
         public void ChangeHealthValue(GameObject targetWithHP)
         {
-            //var HealthPoints = gameObject.GetComponent<HealthComponent>();
             var HealthPoints = targetWithHP.GetComponent<HealthComponent>();
             if (HealthPoints != null)
             {
