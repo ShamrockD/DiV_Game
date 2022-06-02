@@ -4,12 +4,14 @@ using TMPro;
 
 public class HealthComponent : MonoBehaviour
 {
-    [SerializeField] private int _healthPoints;
+    [SerializeField] private float _healthPoints;
+    [SerializeField] private float _maxHealth;
+    [SerializeField] private HealthBarComponent _updateHealthBarComponent;
     [SerializeField] private TextMeshProUGUI _textBoxToShowHealth;
     [SerializeField] private UnityEvent _onDeacreaseHealthValue;
     [SerializeField] private UnityEvent _onIncreaseHealthValue;
     [SerializeField] private UnityEvent _onDie;
-    //[SerializeField] private UnityEvent _showHealthNums;
+    
 
     private void Awake()
     {
@@ -23,6 +25,7 @@ public class HealthComponent : MonoBehaviour
     public void HealthSetValue(int changingValue)
     {
         _healthPoints += changingValue;
+        HealthBarUpdate();
         if (_textBoxToShowHealth != null)
         {
             _textBoxToShowHealth.text = _healthPoints.ToString();
@@ -42,5 +45,14 @@ public class HealthComponent : MonoBehaviour
             _onDeacreaseHealthValue?.Invoke();
         }      
         
+    }
+
+    private void HealthBarUpdate()
+    {
+        float hppercentage = _healthPoints / _maxHealth;
+        Debug.Log($"VALUE THAT WE WHANT {hppercentage}");
+        float valueHPBar = Mathf.Clamp(hppercentage, 0, 1f);
+        Debug.Log($"VALUE THAT WE NEED {valueHPBar}");
+        _updateHealthBarComponent.UpdateHealthBar(valueHPBar);
     }
 }

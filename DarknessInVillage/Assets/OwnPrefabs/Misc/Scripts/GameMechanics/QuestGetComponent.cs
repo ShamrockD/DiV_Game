@@ -17,6 +17,8 @@ namespace QuestsSystem
             {
                 string questName = _listOfLocalObjectQuests[_numberOfQuest].QuestName;
                 QuestListComponent questList = _listOfLocalObjectQuests[_numberOfQuest].QuestListComponent;
+                UnityEvent activateQuestScript = _listOfLocalObjectQuests[_numberOfQuest].ActivateQuestScript;
+                activateQuestScript?.Invoke();
                 Debug.Log($"Quest {questName} was sent");
                 questList.ShowQuests(questName);
                 _numberOfQuest++;
