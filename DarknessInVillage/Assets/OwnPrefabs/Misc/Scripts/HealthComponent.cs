@@ -11,9 +11,9 @@ public class HealthComponent : MonoBehaviour
     [SerializeField] private UnityEvent _onDeacreaseHealthValue;
     [SerializeField] private UnityEvent _onIncreaseHealthValue;
     [SerializeField] private UnityEvent _onDie;
-    
 
-    private void Awake()
+
+    private void OnBecameVisible()
     {
         if (_textBoxToShowHealth != null)
         {
@@ -24,23 +24,36 @@ public class HealthComponent : MonoBehaviour
 
     public void HealthSetValue(int changingValue)
     {
-        _healthPoints += changingValue;
-        HealthBarUpdate();
-        if (_textBoxToShowHealth != null)
+        bool barAndTextHPComponentCheck = (_updateHealthBarComponent != null && _textBoxToShowHealth != null);
+
+        bool checkIfCanHeal = ((_healthPoints + changingValue) <= _maxHealth);
+
+        if (checkIfCanHeal)
+        {
+            _healthPoints += changingValue;
+        }
+        
+        if (barAndTextHPComponentCheck)
+        {
+            HealthBarUpdate();
+        }
+
+        if (_textBoxToShowHealth != null && checkIfCanHeal)
         {
             _textBoxToShowHealth.text = _healthPoints.ToString();
         }
         
-        if (_healthPoints <= 0)
+        if (_healthPoints <= 0 && checkIfCanHeal)
         {
             _onDie?.Invoke();
         }
 
-        if (changingValue > 0)
+        if (changingValue > 0 && barAndTextHPComponentCheck && checkIfCanHeal)
         {
             _onIncreaseHealthValue?.Invoke();
         }
-        else if (changingValue < 0)
+
+        else if (changingValue < 0 && barAndTextHPComponentCheck && checkIfCanHeal)
         {
             _onDeacreaseHealthValue?.Invoke();
         }      
